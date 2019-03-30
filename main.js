@@ -6,14 +6,47 @@ let problemi = [];
 
 let soluzioni = [];
 
-let text_comp = ["ciao", "mondo"]
+var string_file= ""
 
+function build_string(){
+
+    string_file = ""
+
+    for( x = 0; x < problemi.length; x++){
+        string_file += problemi[x] + ":" 
+
+        for(y = 0; y < soluzioni[x].length; y++){
+            string_file+= soluzioni[x][y] 
+
+            if(y < soluzioni[x].length - 1){
+                string_file += ","
+            }
+        }
+        string_file += "\n"
+    }
+    console.log("chiamato build_string: " + string_file)
+}
 
 //genera il file lst
 function genera_file(){
-    var file = new Blob(text_comp, {type: "application/octet-stream"})
 
-    console.log("file generato: " + file)
+   build_string()
+    console.log("deb 1")
+    var file = new Blob([string_file], {type: "text/plain"})
+    console.log("deb 2")
+    var myReader = new FileReader();
+    console.log("deb 3")
+    let letto
+
+    myReader.addEventListener("loadend", function(e){
+        //document.getElementById("paragraph").innerHTML = e.srcElement.result;//prints a strin
+        letto = e.srcElement.result
+        console.log("file generato: " + letto)
+    }); 
+    
+
+    create_url(file, file_name);
+
 }
 
 function start(){
@@ -26,7 +59,7 @@ function start(){
     but_prob_s.disabled = true
     but_solu_s.disabled = true
 
-    genera_file()
+  //  genera_file()
 }
 
 function runList(arg_1, arg_2){
@@ -66,8 +99,8 @@ function prob_press(){
         console.log("vuoto, non aggiunto all'array")
     }
 }
+
 function solu_press(){
-    
     console.log("solu press!")
     
     sol_txt = document.getElementById("solu_prob_tx")
@@ -88,9 +121,8 @@ function solu_press(){
     else{
         console.log("soluzione non aggiunta contenuto vuoto")
     }
-
-
 }
+
 function name_press(){
     
     console.log("name press!")
@@ -106,6 +138,16 @@ function name_press(){
     console.log(file_name)
 
     but_prob_s.disabled = false
-    //but_solu_s.disabled = false
+}
+
+function create_url(file, nome_file){
+    var url = URL.createObjectURL(file)
+    
+    var link = document.getElementById("lnk_down");
+   
+    link.href = url;
+    link.download =file_name + ".lst"
+    link.innerHTML = "scarica il file";
+    //document.body.appendChild(link); // Or append it whereever you want
 }
 
