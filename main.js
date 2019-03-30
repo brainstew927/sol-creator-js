@@ -22,7 +22,7 @@ function build_string(){
                 string_file += ","
             }
         }
-        string_file += "\n"
+        string_file += "\r\n"
     }
     console.log("chiamato build_string: " + string_file)
 }
